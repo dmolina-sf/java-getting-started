@@ -34,6 +34,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Map;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+
+
 @Controller
 @SpringBootApplication
 public class Main {
@@ -46,6 +50,11 @@ public class Main {
 
   public static void main(String[] args) throws Exception {
     SpringApplication.run(Main.class, args);
+  }
+
+
+  public static void ntlmAuth() {
+    //CredentialsProvider credsProvider = new BasicCredentialsProvider();
   }
 
   @RequestMapping("/")
