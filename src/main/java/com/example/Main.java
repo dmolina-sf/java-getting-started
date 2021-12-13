@@ -27,6 +27,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.sql.DataSource;
+
+import java.net.http.HttpClient;
+import java.net.http.HttpResponse;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,6 +39,25 @@ import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+
+import org.apache.http.HttpHost;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.AuthCache;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.auth.BasicScheme;
+import org.apache.http.impl.client.BasicAuthCache;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+
 
 
 @Controller
@@ -49,12 +71,37 @@ public class Main {
   private DataSource dataSource;
 
   public static void main(String[] args) throws Exception {
+    System.out.printf("*** MAIN ***");
     SpringApplication.run(Main.class, args);
+    ntlmAuth();
   }
 
 
   public static void ntlmAuth() {
-    //CredentialsProvider credsProvider = new BasicCredentialsProvider();
+    CredentialsProvider credsProvider = new BasicCredentialsProvider();
+    credsProvider.setCredentials(
+                new AuthScope("smweb.rqa-inc.com", 1111),
+                new UsernamePasswordCredentials("nestlen", "nn2RvwC$")
+                );
+    System.out.printf("credsProvider -> " + credsProvider);
+
+        /*credsProvider.setCredentials(AuthScope.ANY,
+                new NTCredentials("username", "passwd", hostname, "domain.at"));*/
+
+    /*HttpClient client = HttpClientBuilder.create().setDefaultCredentialsProvider(credsProvider).build();
+
+    HttpPost post = new HttpPost("https://smweb.rqa-inc.com/cpwstest/api2.2/rqa/services/");
+
+    StringEntity input = new StringEntity(bodyAsString, HTTP.UTF_8);
+    input.setContentType("application/json");
+    input.setContentEncoding("UTF-8");
+    post.setEntity(input);
+
+    post.setHeader("Accept", "application/json");
+    post.setHeader("Content-type", "application/json");
+
+
+    HttpResponse response = client.execute(post);*/
   }
 
   @RequestMapping("/")
